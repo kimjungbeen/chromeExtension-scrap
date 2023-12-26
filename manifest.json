@@ -1,0 +1,35 @@
+{
+  "name": "Scrap",
+  "version": "23.12.24",
+  "description": "Scrap content with trace",
+  "manifest_version": 3,
+  "background": {
+      "service_worker": "background.js"
+  },
+  "content_scripts": [{
+      "matches": ["*://*/*"],
+      "js": ["content_script.js"]
+  }],
+  "action": {
+      "default_title": "Dig deeper!",
+      "default_popup": "popup.html"
+    },
+  "permissions": [
+      "storage",
+      "contextMenus",
+      "scripting",
+      "activeTab",
+      "tabs",
+      "notifications",
+      "*://*/"
+  ],
+  "host_permissions": [
+      "*://*/*"
+  ],
+  "icons": {
+     "16": "icon16.png",
+     "32": "icon32.png",
+     "48": "icon48.png",
+     "128": "icon128.png"
+   }
+}
