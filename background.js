@@ -534,17 +534,24 @@ async function scrap() {
         const url = window.location.href
         var cursor = window.getSelection().anchorNode.parentElement;
         var result = 'UNIDENTIFIED';
-        if (url.match("jw.org")) {
+        
+        if (url.match("wol.jw.org")) {
             while (cursor.nodeName != 'BODY') {
                 if (cursor.classList.contains('v')) {result = 'VERSE'; break};
                 if (cursor.classList.contains('s5')) {result = 'STUDYNOTE'; break};
                 if (cursor.querySelector('.spriteLink') != undefined) {result = 'PARAGRAPH'; break};
                 if (cursor.classList.contains('gallery')) {result = 'GALLERY'; break;};
-                if (cursor.querySelector("video") != undefined) {result = 'VIDEO'; break;};
-                if (cursor.querySelector('.articleCitation') != undefined) {result = 'ARTICLE'; break;};
                 if (cursor.querySelector('#dailyText') != undefined) {result = 'DAILYTEXT'; break;};
                 if (cursor.querySelector('.tooltip') != undefined) {result = 'TOOLTIP'; break;};
                 if (cursor.querySelector('.results > .linkCard') != undefined) {result = 'LINKCARD'; break;};
+                cursor = cursor.parentElement;
+            };
+        }
+
+        else if (url.match("jw.org")) {
+            while (cursor.nodeName != 'BODY') {
+                if (cursor.querySelector("video") != undefined) {result = 'VIDEO'; break;};
+                if (cursor.querySelector('.articleCitation') != undefined) {result = 'ARTICLE'; break;};
                 cursor = cursor.parentElement;
             };
         }
