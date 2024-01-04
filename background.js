@@ -700,6 +700,7 @@ async function scrap() {
     async function getAddressOfPublication() {
         console.log("get address of publication")
         var url = window.location.href.replace(/(\?[^#]*)/g, '')
+        const lang = document.querySelector("#contentLibLang").getAttribute("value")
         
         var sl = document.querySelector(".spriteLink.ellipsized")
         var spd = document.querySelector(".scrollPositionDisplay")
@@ -740,23 +741,17 @@ async function scrap() {
             var r = s.getRangeAt(0);
             var sc = r.startContainer;
             var c = sc.nodeName == '#text' ? sc.parentElement : sc;
-            var p = c.querySelector('p'); c = p == undefined ? c : p;
-            while (c.querySelector('sup') == undefined) {
-                if (c.nodeName == 'P') { break; };
+            while (!c.querySelector('.parNum') && c.nodeName != 'P') {
                 c = c.parentElement
-            };
-            var sup = c.querySelector('sup');
-            const pStart = sup.textContent
+            }
+            const pStart = Number(c.querySelector('.parNum').dataset.pnum)
             
             var ec = r.endContainer;
             c = ec.nodeName == '#text' ? ec.parentElement : ec;
-            p = c.querySelector('p'); c = p == undefined ? c : p;
-            while (c.querySelector('sup') == undefined) {
-                if (c.nodeName == 'P') { break; };
+            while (!c.querySelector('.parNum') && c.nodeName != 'P') {
                 c = c.parentElement
-            };
-            sup = c.querySelector('sup');
-            const pEnd = ec.nodeName == '#text' ? sup.innerText : sup.innerText - 1;
+            }
+            const pEnd = Number(c.querySelector('.parNum').dataset.pnum)
             
             if (lang.match("English")) {
                 paragraph = "par. " + (pStart == pEnd ? pStart : pStart + (pStart == pEnd-1 ? ", " : "-") + pEnd)
@@ -791,7 +786,6 @@ async function scrap() {
          authorship and source url
          */
         var authorship = ""
-        const lang = document.querySelector("#contentLibLang").getAttribute("value")
         // Check if the URL contains "en" or "ko"
         if (lang.match("English")) {
             // If the spriteLink is not empty and the scrollPositionDisplay is empty,
@@ -835,7 +829,7 @@ async function scrap() {
         }
         
         authorship = authorship.trim()
-        authorship = authorship + " " + title + " " + paragraph
+        authorship = authorship + " " + paragraph + " " + title
         
         url = (url.indexOf("?") != -1 ? url : url.split("?")[0])
         url = (url.indexOf("#") == -1 ? url : url.split("#")[0])
