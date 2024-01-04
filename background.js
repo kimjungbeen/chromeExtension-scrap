@@ -758,7 +758,12 @@ async function scrap() {
             sup = c.querySelector('sup');
             const pEnd = ec.nodeName == '#text' ? sup.innerText : sup.innerText - 1;
             
-            paragraph = "¶" + (pStart == pEnd ? pStart : pStart + (pStart == pEnd-1 ? ", " : "-") + pEnd)
+            if (lang.match("English")) {
+                paragraph = "par. " + (pStart == pEnd ? pStart : pStart + (pStart == pEnd-1 ? ", " : "-") + pEnd)
+            } else if (lang.match("한국어")) {
+                paragraph = "제" + (pStart == pEnd ? pStart : pStart + (pStart == pEnd-1 ? ", " : "-") + pEnd) + "항"
+            }
+            
         } catch {
             paragraph = "h=" + (hStart == hEnd ? hStart : hStart + (hStart == hEnd-1 ? ", " : "-") + hEnd)
         }
@@ -792,7 +797,7 @@ async function scrap() {
             // If the spriteLink is not empty and the scrollPositionDisplay is empty,
             // set theResult to the spriteLink and theParagraph
             if (slText != "" && spdText == "") {
-                authorship = slText + " " + title;
+                
             } else {
                 var sls = slText.split('pp. ')
                 sls = sls.length == 1 ? slText.split('p. ') : sls
@@ -804,11 +809,11 @@ async function scrap() {
                 
                 console.log(spds)
                 
-                authorship = sls[0] + " " + title + " p. " + spds[spds.length-1]
+                authorship = sls[0] + " " + " p. " + spds[spds.length-1]
             }
         } else if (lang.match("한국어")) {
             if (slText != "" && spdText == "") {
-                authorship = slText + " " + title
+                
             } else {
                 var frags = slText.split(" ")
                 for (const key in frags) {
@@ -818,8 +823,6 @@ async function scrap() {
                         authorship = authorship + " " + frag
                     }
                 }
-                
-                authorship = authorship + " " + title
                 
                 frags = spdText.split(" ")
                 for (const key in frags) {
@@ -832,7 +835,7 @@ async function scrap() {
         }
         
         authorship = authorship.trim()
-        authorship = authorship + " " + paragraph
+        authorship = authorship + " " + title + " " + paragraph
         
         url = (url.indexOf("?") != -1 ? url : url.split("?")[0])
         url = (url.indexOf("#") == -1 ? url : url.split("#")[0])

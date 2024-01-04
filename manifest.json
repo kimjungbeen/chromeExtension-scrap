@@ -1,6 +1,6 @@
 {
   "name": "Scrap",
-  "version": "23.12.24",
+  "version": "23.01.03",
   "description": "Scrap content with trace",
   "manifest_version": 3,
   "background": {
